@@ -51,10 +51,12 @@ jobs:
 
       - name: Fetch digest
         run: |
+          curl -I -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://ghcr.io/v2/jimpick/helloworld-nodejs/manifests/jimpick-github-actions
           DIGEST=$(curl -I -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://ghcr.io/v2/jimpick/helloworld-nodejs/manifests/jimpick-github-actions | sed -n 's/^docker-content-digest: //p')
           echo $DIGEST
 
       - name: Outputs
         run: |
           echo digest: ${{ steps.build_and_push.outputs.digest }}
+          echo metadata: ${{ steps.build_and_push.outputs.metadata }}
 
