@@ -49,3 +49,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Outputs
+        run: |
+          echo imageid: ${{ steps.build_and_push.outputs.imageid }}
+          echo digest: ${{ steps.build_and_push.outputs.digest }}
+
