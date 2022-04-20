@@ -22,6 +22,8 @@ jobs:
       packages: write
     outputs:
       digest: ${{ steps.build_and_push.outputs.digest }}
+      metadata: ${{ steps.build_and_push.outputs.metadata }}
+      digest2: ${{ steps.fetch_digest.outputs.digest }}
 
     steps:
       - name: Check out repository
@@ -50,15 +52,18 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Fetch digest
+        id: fetch_digest
         run: |
           # https://github.community/t/how-to-check-if-a-container-image-exists-on-ghcr/154836
           TOKEN=$(curl https://ghcr.io/token\?scope\="repository:jimpick/helloworld-nodejs:pull" | jq -r .token)
           curl -I -H "Authorization: Bearer $TOKEN" https://ghcr.io/v2/jimpick/helloworld-nodejs/manifests/jimpick-github-actions
           DIGEST=$(curl -I -H "Authorization: Bearer $TOKEN" https://ghcr.io/v2/jimpick/helloworld-nodejs/manifests/jimpick-github-actions | sed -n 's/^docker-content-digest: //p')
           echo $DIGEST
+          echo "::set-output name=digest::$DIGEST"
 
       - name: Outputs
         run: |
           echo digest: ${{ steps.build_and_push.outputs.digest }}
           echo metadata: ${{ steps.build_and_push.outputs.metadata }}
+          echo digest2: ${{ steps.fetch_digest.outputs.digest }}
 
