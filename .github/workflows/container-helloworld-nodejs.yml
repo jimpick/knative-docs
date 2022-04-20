@@ -12,7 +12,7 @@ defaults:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: helloworld-nodejs
+  IMAGE_NAME: jimpick/helloworld-nodejs
 
 jobs:
   run-build-and-push-oci-image:
