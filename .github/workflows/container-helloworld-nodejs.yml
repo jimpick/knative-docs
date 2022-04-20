@@ -21,7 +21,6 @@ jobs:
       contents: read
       packages: write
     outputs:
-      imageid: ${{ steps.build_and_push.outputs.imageid }}
       digest: ${{ steps.build_and_push.outputs.digest }}
 
     steps:
@@ -52,6 +51,5 @@ jobs:
 
       - name: Outputs
         run: |
-          echo imageid: ${{ steps.build_and_push.outputs.imageid }}
           echo digest: ${{ steps.build_and_push.outputs.digest }}
 
