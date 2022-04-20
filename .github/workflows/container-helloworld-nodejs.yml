@@ -51,8 +51,10 @@ jobs:
 
       - name: Fetch digest
         run: |
-          curl -I -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://ghcr.io/v2/jimpick/helloworld-nodejs/manifests/jimpick-github-actions
-          DIGEST=$(curl -I -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://ghcr.io/v2/jimpick/helloworld-nodejs/manifests/jimpick-github-actions | sed -n 's/^docker-content-digest: //p')
+          # https://github.community/t/how-to-check-if-a-container-image-exists-on-ghcr/154836
+          TOKEN=$(curl https://ghcr.io/token\?scope\="repository:jimpick/helloworld-nodejs:pull" | jq -r .token)
+          curl -I -H "Authorization: Bearer $TOKEN" https://ghcr.io/v2/jimpick/helloworld-nodejs/manifests/jimpick-github-actions
+          DIGEST=$(curl -I -H "Authorization: Bearer $TOKEN" https://ghcr.io/v2/jimpick/helloworld-nodejs/manifests/jimpick-github-actions | sed -n 's/^docker-content-digest: //p')
           echo $DIGEST
 
       - name: Outputs
