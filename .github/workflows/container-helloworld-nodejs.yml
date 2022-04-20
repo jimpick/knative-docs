@@ -20,6 +20,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      imageid: ${{ steps.build_and_push.outputs.imageid }}
+      digest: ${{ steps.build_and_push.outputs.digest }}
 
     steps:
       - name: Check out repository
@@ -39,6 +42,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
+        id: build_and_push
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: code-samples/serving/hello-world/helloworld-nodejs
